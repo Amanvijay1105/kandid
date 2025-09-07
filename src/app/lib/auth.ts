@@ -1,14 +1,18 @@
+
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { db } from "@/app/config/db"; 
-import { createAuthClient } from "better-auth/react";
+import * as schema from "@/app/db/schema"
 import { nextCookies } from "better-auth/next-js";
 export const auth = betterAuth({
     database: drizzleAdapter(db, {
         provider: "pg",
+        schema,
     }),
     emailAndPassword : {
         enabled : true,
+        requireEmailVerification:false
+
     },
     socialProviders : {
         google : {
@@ -20,6 +24,3 @@ export const auth = betterAuth({
     plugins : [nextCookies()]
 });
 
-export const authClient = createAuthClient({
-    baseURL : "http://localhost:3000"
-})

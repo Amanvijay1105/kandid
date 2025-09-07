@@ -7,8 +7,6 @@ import { authClient } from "@/app/lib/auth-client";
 
 export default function RegisterWithEmail() {
   const [showPassword, setShowPassword] = useState(false);
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -16,15 +14,14 @@ export default function RegisterWithEmail() {
 
   const router = useRouter();
 
-  const handleSignup = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setErrorMsg(null);
 
-    const { data, error } = await authClient.signUp.email({
+    const { data, error } = await authClient.signIn.email({
       email,
       password,
-      name: `${firstName} ${lastName}`,
     });
 
     setLoading(false);
@@ -34,49 +31,23 @@ export default function RegisterWithEmail() {
       return;
     }
 
-    // success
-    console.log("User signed up:", data);
-    router.push("/dashboard"); // redirect after signup
+    router.push("/dashboard"); 
   };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50">
       <div className="w-[400px] rounded-xl bg-white shadow-lg p-6">
-        {/* Back */}
         <button
           className="flex items-center gap-1 text-gray-600 text-sm hover:underline mb-4"
           onClick={() => router.back()}
         >
           ← Back
         </button>
-
-        {/* Title */}
-        <h2 className="text-xl font-semibold">Register with email</h2>
+        <h2 className="text-xl font-semibold">Login  with email</h2>
         <p className="text-sm text-gray-500 mb-6">
-          Register using your email address.
+           login using your email address.
         </p>
-
-        {/* Form */}
-        <form className="space-y-4" onSubmit={handleSignup}>
-          {/* First + Last Name */}
-          <div className="flex gap-3">
-            <input
-              type="text"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              placeholder="First Name"
-              className="w-1/2 border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none text-sm"
-            />
-            <input
-              type="text"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              placeholder="Last Name"
-              className="w-1/2 border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none text-sm"
-            />
-          </div>
-
-          {/* Email */}
+        <form className="space-y-4" onSubmit={handleLogin}>
           <div>
             <label className="text-sm text-gray-700 block mb-1">Email</label>
             <input
@@ -88,8 +59,6 @@ export default function RegisterWithEmail() {
               required
             />
           </div>
-
-          {/* Password */}
           <div>
             <label className="text-sm text-gray-700 block mb-1">Password</label>
             <div className="relative">
@@ -110,27 +79,21 @@ export default function RegisterWithEmail() {
               </button>
             </div>
           </div>
-
-          {/* Error Message */}
           {errorMsg && (
             <p className="text-red-600 text-sm text-center">{errorMsg}</p>
           )}
-
-          {/* Submit */}
           <button
             type="submit"
             disabled={loading}
             className="w-full bg-blue-600 text-white rounded-full py-2 hover:bg-blue-700 transition disabled:opacity-50"
           >
-            {loading ? "Creating account..." : "Create my account"}
+            {loading ? "Logging in" : "login "}
           </button>
         </form>
-
-        {/* Footer */}
         <p className="text-sm text-center mt-4 text-gray-600">
-          Already have an account?{" "}
-          <a href="/login" className="text-blue-600 font-medium hover:underline">
-            Login
+          new account {" "}
+          <a href="/signup" className="text-blue-600 font-medium hover:underline">
+            
           </a>
         </p>
       </div>

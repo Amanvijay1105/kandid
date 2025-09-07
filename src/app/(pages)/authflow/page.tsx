@@ -1,24 +1,31 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-
+import { authClient } from "@/app/lib/auth-client";
 export default function AuthCard() {
   const [isLogin, setIsLogin] = useState(true);
   const router = useRouter();
 
-  const handleGoogleAuth = () => {
+  const handleGoogleAuth = async() => {
     if (isLogin) {
-      router.push("/login/google"); // 🔹 login via Google
+      await authClient.signIn.social({
+        provider : "google",
+        callbackURL : "/dashboard"
+      })
     } else {
-      router.push("/signup/google"); // 🔹 signup via Google
+      await authClient.signIn.social({
+        provider : "google",
+        callbackURL : "/dashboard"
+      }) // 🔹 signup via Google
     }
+
   };
 
   const handleEmailAuth = () => {
     if (isLogin) {
-      router.push("/login/email"); // 🔹 login via Email
+      router.push("/login/email"); 
     } else {
-      router.push("/signup/email"); // 🔹 signup via Email
+      router.push("/signup/email"); 
     }
   };
 
