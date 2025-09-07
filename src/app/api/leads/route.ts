@@ -28,7 +28,9 @@ export async function GET(req: NextRequest) {
     .offset(offset);
 
   if (search) {
+    //@ts-ignore
     query = query.where(
+      //@ts-ignore
       or(
         ilike(leads.name, `%${search}%`),
         ilike(leads.email, `%${search}%`),
